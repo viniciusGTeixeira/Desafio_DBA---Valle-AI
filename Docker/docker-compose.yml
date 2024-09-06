@@ -1,0 +1,37 @@
+## Estou utilizando a imagem oficial do postgreSQL
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: shopnow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql/init-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db-network
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: shopnow
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./sql/init-mysql.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db-network
+
+networks:
+  db-network:
+    driver: bridge
